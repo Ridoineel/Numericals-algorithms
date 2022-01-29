@@ -55,6 +55,7 @@ def triangulation(A, lower=False):
 				if A[j][i] != 0:
 					A[i], A[j] = A[j], A[i]
 					find = True
+					break
 
 			if find:
 				pivot_line = A[i]
