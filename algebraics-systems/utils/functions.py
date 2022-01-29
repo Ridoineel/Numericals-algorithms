@@ -131,8 +131,3 @@ def printMatrix(A):
 		print("|", *[a.rjust(5) for a in map(str, A[i])])
 	
 	print()
-
-print(isMatrix([
-		[1, 2, 8],
-		[1, 2, 3]
-	]))
