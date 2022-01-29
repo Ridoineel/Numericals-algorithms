@@ -82,6 +82,11 @@ def triangulation(A, lower=False):
 
 			A[j] = [sl_i -(sl_first/pivot)*pl_i for (sl_i, pl_i) in zip(secondary_line, pivot_line)]
 
+			# if any of line is null: [0, 0, ..., 0]
+			# not with extended values (:length_A)
+			if not any(A[j][:length_A]):
+				return 0
+
 	return 1
 
 def diagonalization(A):
@@ -105,9 +110,10 @@ def diagonalization(A):
 	# print("Lower triangulation")
 	# printMatrix(A)
 	
-	# divide lines by i,i of this line A(0, 0), A(1, 1), etc...
+	# divide Aii and Ai_-1 (extended value) by Aii
 	for i in range(len(A)):
-		A[i] = [a/A[i][i] for a in A[i]]
+		A[i][-1] /= A[i][i]
+		A[i][i] = 1.0
 
 	# print("Diagonalization")
 	# printMatrix(A)
