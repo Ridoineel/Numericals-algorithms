@@ -19,7 +19,7 @@ def gauss(A, B):
 	AB = join(A, B)
 
 	
-	# Do trangulation
+	# Do triangulation
 	if triangulation(AB) == 0:
 		return 0
 	
@@ -58,7 +58,8 @@ def gaussJordan(A, B):
 	X = []
 	AB = join(A, B)
 
-	if toIdMatrix(AB) == 0:
+	# Do diagonalization
+	if diagonalization(AB) == 0:
 		return 0
 
 	# Get X result: last of AB lines
@@ -75,7 +76,7 @@ def gaussJordan(A, B):
 
 def main():
 	res = gaussJordan([
-			[0, 2, 3, -1],
+			[1, 2, 3, -1],
 			[0, 1, 4, 2],
 			[1, 2, 1, 5],
 			[-1, 1, 3, 1]
