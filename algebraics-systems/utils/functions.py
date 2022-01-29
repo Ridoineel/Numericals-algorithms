@@ -11,6 +11,18 @@ def isSquareMatrix(A):
 
 	return True
 
+def isMatrix(A):
+	if not A:
+		return False
+
+	nb_cols = len(A[0])
+
+	for line in A:
+		if type(line) != list or len(line) != nb_cols:
+			return False
+
+	return True
+
 def join(A, B):
 	""" Join vector B to matrix A """
 
@@ -72,19 +84,33 @@ def triangulation(A, lower=False):
 
 	return 1
 
-def toIdMatrix(A):
-	""" Extended square matrix A to indentite 
+def diagonalization(A):
+	""" Dagonalization on extended square matrix A 
 		it affect origin A
+		
+		values return: report from triangulation function
 
 	"""
 
-	# do triangulation and lower triangulation on A
-	res = triangulation(A) and triangulation(A, lower=True)
+	# do upper triangulation and lower triangulation on A
+	res = triangulation(A)
 	if res != 1: return res
 
+	# print("Upper triangulation")
+	# printMatrix(A)
+
+	res = triangulation(A, lower=True)
+	if res != 1: return res
+
+	# print("Lower triangulation")
+	# printMatrix(A)
+	
 	# divide lines by i,i of this line A(0, 0), A(1, 1), etc...
 	for i in range(len(A)):
 		A[i] = [a/A[i][i] for a in A[i]]
+
+	# print("Diagonalization")
+	# printMatrix(A)
 
 	return 1
 
@@ -96,3 +122,17 @@ def transpose(A):
 			A[i][j], A[j][i] = A[j][i], A[i][j]
 
 	return A
+
+def printMatrix(A):
+	if not isMatrix(A):
+		return None
+
+	for i in range(len(A)):
+		print("|", *[a.rjust(5) for a in map(str, A[i])])
+	
+	print()
+
+print(isMatrix([
+		[1, 2, 8],
+		[1, 2, 3]
+	]))
