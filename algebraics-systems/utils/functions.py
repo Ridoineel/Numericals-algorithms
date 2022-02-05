@@ -42,17 +42,17 @@ def triangulation(A, lower=False):
 
 		values to return:
 			1: success
-			0: A is null matrix
+			0: A is not invertible matrix
 
 	"""
 
-	length_A = len(A)
+	n = len(A)
 
 	if not lower:
-		RANGE_I = range(length_A - 1)
-		RANGE_J = lambda i: range(i + 1, length_A)
+		RANGE_I = range(n - 1)
+		RANGE_J = lambda i: range(i + 1, n)
 	else:
-		RANGE_I = range(length_A - 1, 0, -1)
+		RANGE_I = range(n - 1, 0, -1)
 		RANGE_J = lambda i: range(i - 1, -1, -1)
 	
 	for i in RANGE_I:
@@ -83,8 +83,8 @@ def triangulation(A, lower=False):
 			A[j] = [sl_i -(sl_first/pivot)*pl_i for (sl_i, pl_i) in zip(secondary_line, pivot_line)]
 
 			# if any of line is null: [0, 0, ..., 0]
-			# not with extended values (:length_A)
-			if not any(A[j][:length_A]):
+			# not with extended values (:n)
+			if not any(A[j][:n]):
 				return 0
 
 	return 1
@@ -119,6 +119,58 @@ def diagonalization(A):
 	# printMatrix(A)
 
 	return 1
+
+def crout(A):
+	""" Crout square matrix decompositon
+
+	""" 
+
+	n = len(A)
+
+	# if not A[0][0]:
+	# 		find = False
+
+	# 		for j in range(1, n):
+	# 			if A[j][0] != 0:
+	# 				# L[0], L[j] = L[j], L[0]
+	# 				# U[0], U[j] = U[j], U[0]
+	# 				A[0], A[j] = A[j], A[0]
+	# 				find = True
+	# 				break
+
+	# Initialize L and U
+	L = [[0] * n for i in range(n)]
+	U = [[0]*i + [1] + [0]*(n - i - 1)  for i in range(n)]
+
+	# Find first column of L
+	for i in range(n):
+		L[i][0] = A[i][0]
+
+	# Find first line of U
+	for i in range(n):
+		U[0][i] = A[0][i]/L[0][0]
+
+	
+	for i in range(1, n):
+		# pivot Lii
+		L[i][i] = A[i][i] - sum(L[i][k]*U[k][i] for k in range(i))
+
+		# column Li: L[j][i], j > i
+		for j in range(i + 1, n):
+			L[j][i] = A[j][i] - sum(L[j][k]*U[k][i] for k in range(j))
+
+		# line Ui: U[i][j], j > i
+		for j in range(i + 1, n):
+			U[i][j] = (A[i][j] - sum(L[i][k]*U[k][j] for k in range(i)))/L[i][i]
+
+		
+
+	# Lnn
+	L[n - 1][n - 1] = A[n - 1][n - 1] - sum(L[n - 1][k]*U[k][n - 1] for k in range(n - 1))
+
+
+	
+	return L, U
 
 def transpose(A):
 	A = A.copy()
