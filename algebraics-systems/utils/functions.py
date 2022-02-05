@@ -121,7 +121,7 @@ def diagonalization(A):
 	return 1
 
 def crout(A):
-	""" Crout square matrix decompositon
+	""" Crout decompositon on square matrix A
 
 	""" 
 
