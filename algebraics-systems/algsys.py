@@ -1,17 +1,16 @@
 from utils.functions import *
+from matrix import Matrix
 
 def gauss(A, B):
 	""" Gauss algorithm to solve AX = B (algebraic systems)
 
 		value to retur in order:
-			° -1: A isn't square matrix or 
-				  B isn't vector or 
-				  line(A) != line(B)
+			° -1: line(A) != line(B)
 			° 0: A is not invertible matrix
 			° Vector X (list): if success
 	"""
 
-	if not isSquareMatrix(A) or type(B) != list or (len(A) != len(B)):
+	if len(A) != len(B):
 		return -1
 
 	length_A = len(A)
@@ -42,14 +41,12 @@ def gaussJordan(A, B):
 	""" Gauss-Jordan algorithm to solve AX = B (algebraic systems)
 
 		value to return in order:
-			° -1: A isn't square matrix or 
-				  B isn't vector or 
-				  line(A) != line(B)
+			° -1: line(A) != line(B)
 			° 0: A is not invertible matrix
 			° Vector X (list): if success
 	"""
 
-	if not isSquareMatrix(A) or type(B) != list or (len(A) != len(B)):
+	if len(A) != len(B):
 		return -1
 
 	length_A = len(A)
@@ -74,14 +71,12 @@ def lu(A, B):
 	""" LU algorithm to solve AX = B (algebraic systems)
 
 		value to return in order:
-			° -1: A isn't square matrix or 
-				  B isn't vector or 
-				  line(A) != line(B)
+			° -1: line(A) != line(B)
 			° 0: A is not invertible matrix
 			° Vector X (list): if success
 	"""
 
-	if not isSquareMatrix(A) or type(B) != list or (len(A) != len(B)):
+	if len(A) != len(B):
 		return -1
 
 	length_A = len(A)
@@ -89,7 +84,7 @@ def lu(A, B):
 	Y = list()
 
 	# get crout decomposition of A
-	decomp = crout(A)
+	decomp = A.decompose(method="crout")
 	if decomp == 0:
 		return 0
 
@@ -124,11 +119,12 @@ def lu(A, B):
 	return X
 
 def main():
-	res = lu([
+	# verify if not A.isSquareMatrix() or not isVector(B)
+	res = gaussJordan(Matrix([
 			[0, 2, 1],
 			[1, 0, 0],
 			[3, 0, 1],
-		], 
+		]), 
 			[5, -1, -2]
 		)
 
