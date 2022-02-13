@@ -85,11 +85,18 @@ def lu(A, B):
 		return -1
 
 	length_A = len(A)
-
-	L, U = crout(A)
-
-	Y = list()
 	X = [None for i in range(length_A)]
+	Y = list()
+
+	# get crout decomposition of A
+	decomp = crout(A)
+	if decomp == 0:
+		return 0
+
+	L, U, O = decomp
+
+	# Change B according to O
+	B = [B[i] for i in O]
 
 	# Get Y elements by doing the descent
 	for i in range(length_A):
@@ -118,11 +125,11 @@ def lu(A, B):
 
 def main():
 	res = lu([
-			[1, 2, 1],
-			[0, 1, 0],
-			[0, 2, 1]
+			[0, 2, 1],
+			[1, 0, 0],
+			[3, 0, 1],
 		], 
-			[3, 2, 1]
+			[5, -1, -2]
 		)
 
 	print(res)

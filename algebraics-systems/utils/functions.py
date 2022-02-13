@@ -122,34 +122,46 @@ def diagonalization(A):
 
 def crout(A):
 	""" Crout decompositon on square matrix A
+		Value to return:
+			° Vectors L, U and O: if success
+			° 0: if A is not invertible matrix
 
 	""" 
 
+	def permutation(i):
+		# permutation of lines i and lines j (j > i) 
+		# where L[j][i] != 0
+		
+		find = False
+
+		for j in range(i + 1, n):
+			if L[j][i] != i:
+				L[i], L[j] = L[j], L[i]
+				O[i], O[j] = O[j], O[i]
+				A[i], A[j] = A[j], A[i]
+				find = True
+				break
+
+		return find
+
 	n = len(A)
 
-	# if not A[0][0]:
-	# 		find = False
-
-	# 		for j in range(1, n):
-	# 			if A[j][0] != 0:
-	# 				# L[0], L[j] = L[j], L[0]
-	# 				# U[0], U[j] = U[j], U[0]
-	# 				A[0], A[j] = A[j], A[0]
-	# 				find = True
-	# 				break
-
-	# Initialize L and U
-	L = [[0] * n for i in range(n)]
+	# Initialize L, U and O (O is permutation vector)
+	L = [[0]*n for i in range(n)]
 	U = [[0]*i + [1] + [0]*(n - i - 1)  for i in range(n)]
+	O = list(range(n))
 
 	# Find first column of L
 	for i in range(n):
 		L[i][0] = A[i][0]
-
+	
+	## permutation if the pivot is null
+	if L[0][0] == 0 and not permutation(0):
+		return 0
+	
 	# Find first line of U
 	for i in range(n):
 		U[0][i] = A[0][i]/L[0][0]
-
 	
 	for i in range(1, n):
 		# pivot Lii
@@ -159,18 +171,18 @@ def crout(A):
 		for j in range(i + 1, n):
 			L[j][i] = A[j][i] - sum(L[j][k]*U[k][i] for k in range(j))
 
+		## permutation if the pivot is null
+		if L[i][i] == 0 and not permutation(i):
+			return 0
+
 		# line Ui: U[i][j], j > i
 		for j in range(i + 1, n):
 			U[i][j] = (A[i][j] - sum(L[i][k]*U[k][j] for k in range(i)))/L[i][i]
 
-		
-
 	# Lnn
 	L[n - 1][n - 1] = A[n - 1][n - 1] - sum(L[n - 1][k]*U[k][n - 1] for k in range(n - 1))
-
-
 	
-	return L, U
+	return L, U, O
 
 def transpose(A):
 	A = A.copy()
