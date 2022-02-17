@@ -16,6 +16,8 @@ class Matrix(list):
 	def decompose(self, method="crout"):
 		if method == "crout":
 			return self.crout()
+		elif method == "cholesky":
+			return self.cholesky()
 
 	def crout(self):
 		""" Crout decompositon on square matrix A
@@ -26,18 +28,23 @@ class Matrix(list):
 		""" 
 
 		def permutation(i):
-			# permutation of lines i and lines j (j > i) 
-			# where L[j][i] != 0
+			# permutation of line i and line j (j > i) 
+			# where max absolute value L[j][i] != 0
 			
 			find = False
+			id_of_max = i
 
+			# search index of max pivot absolute value
 			for j in range(i + 1, n):
-				if L[j][i] != i:
-					L[i], L[j] = L[j], L[i]
-					O[i], O[j] = O[j], O[i]
-					A[i], A[j] = A[j], A[i]
-					find = True
-					break
+				if A[j][i] and L[j][i] > abs(L[id_of_max][i]):
+					id_of_max = j
+
+			if id_of_max != i:
+				# permutation
+				L[i], L[j] = L[j], L[i]
+				O[i], O[j] = O[j], O[i]
+				A[i], A[j] = A[j], A[i]
+				find = True
 
 			return find
 
@@ -81,6 +88,9 @@ class Matrix(list):
 		L[n - 1][n - 1] = A[n - 1][n - 1] - sum(L[n - 1][k]*U[k][n - 1] for k in range(n - 1))
 		
 		return L, U, O
+
+	def cholesky(self):
+		pass
 
 	def transpose(self):
 		A = self.copy()

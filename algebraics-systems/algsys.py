@@ -118,14 +118,47 @@ def lu(A, B):
 
 	return X
 
+def jaccobi(A, B, n_iter=10):
+	n = len(A)
+
+	X = [0 for i in range(n)]
+	Xk = X.copy()
+
+	for k in range(n_iter):
+		for i in range(n):
+			S = sum(A[i][j]*Xk[j] for j in range(n) if j != i)
+			X[i] = (B[i] - S)/A[i][i]
+
+		# print(k, X, Xk)
+		Xk = X.copy()
+
+	return X
+
+def gaussSeidel(A, B, n_iter=10):
+	n = len(A)
+
+	X = [0 for i in range(n)]
+	Xk = X.copy()
+
+	for k in range(n_iter):
+		for i in range(n):
+			S1 = sum(A[i][j]*X[j] for j in range(i))
+			S2 = sum(A[i][j]*Xk[j] for j in range(i + 1, n))
+			
+			X[i] = (B[i] - S1 - S2)/A[i][i]
+
+		Xk = X.copy()
+
+	return X
+
 def main():
 	# verify if not A.isSquareMatrix() or not isVector(B)
-	res = gaussJordan(Matrix([
-			[0, 2, 1],
-			[1, 0, 0],
+	res = gaussSeidel(Matrix([
+			[6, 2, 1],
+			[1, 2, 0],
 			[3, 0, 1],
-		]), 
-			[5, -1, -2]
+		]),
+			[5, -1, -2], 100
 		)
 
 	print(res)
