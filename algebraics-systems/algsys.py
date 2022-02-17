@@ -145,7 +145,7 @@ def gaussSeidel(A, B, n_iter=10):
 			S1 = sum(A[i][j]*X[j] for j in range(i))
 			S2 = sum(A[i][j]*Xk[j] for j in range(i + 1, n))
 			
-			X[i] = (B[i] - S1 - S2)/A[i][i]
+			X[i] = round((B[i] - S1 - S2)/A[i][i], 8)
 
 		Xk = X.copy()
 
