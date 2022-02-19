@@ -118,7 +118,7 @@ def lu(A, B):
 
 	return X
 
-def jaccobi(A, B, n_iter=10):
+def jaccobi(A, B, n_iter=20):
 	n = len(A)
 
 	X = [0 for i in range(n)]
@@ -126,15 +126,19 @@ def jaccobi(A, B, n_iter=10):
 
 	for k in range(n_iter):
 		for i in range(n):
+			## permutation if pivot A[i][i]=0 ##
+			if A[i][i] == 0 and not permutation(A, start=i, auxiliars_matrix=[B]):
+				return 0
+
 			S = sum(A[i][j]*Xk[j] for j in range(n) if j != i)
-			X[i] = (B[i] - S)/A[i][i]
+			X[i] = round((B[i] - S)/A[i][i], 8)
 
 		# print(k, X, Xk)
 		Xk = X.copy()
 
 	return X
 
-def gaussSeidel(A, B, n_iter=10):
+def gaussSeidel(A, B, n_iter=20):
 	n = len(A)
 
 	X = [0 for i in range(n)]
@@ -142,6 +146,10 @@ def gaussSeidel(A, B, n_iter=10):
 
 	for k in range(n_iter):
 		for i in range(n):
+			## permutation if pivot A[i][i]=0 ##
+			if A[i][i] == 0 and not permutation(A, start=i, auxiliars_matrix=[B]):
+				return 0
+	
 			S1 = sum(A[i][j]*X[j] for j in range(i))
 			S2 = sum(A[i][j]*Xk[j] for j in range(i + 1, n))
 			
@@ -153,12 +161,12 @@ def gaussSeidel(A, B, n_iter=10):
 
 def main():
 	# verify if not A.isSquareMatrix() or not isVector(B)
-	res = gaussSeidel(Matrix([
-			[6, 2, 1],
+	res = jaccobi(Matrix([
+			[0, 2, 1],
 			[1, 2, 0],
 			[3, 0, 1],
 		]),
-			[5, -1, -2], 100
+			[5, -1, -2]
 		)
 
 	print(res)

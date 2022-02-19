@@ -1,4 +1,4 @@
-from utils.functions import isMatrix
+from utils.functions import isMatrix, permutation
 
 class Matrix(list):
 	def extend(self, B):
@@ -27,27 +27,6 @@ class Matrix(list):
 
 		""" 
 
-		def permutation(i):
-			# permutation of line i and line j (j > i) 
-			# where max absolute value L[j][i] != 0
-			
-			find = False
-			id_of_max = i
-
-			# search index of max pivot absolute value
-			for j in range(i + 1, n):
-				if A[j][i] and L[j][i] > abs(L[id_of_max][i]):
-					id_of_max = j
-
-			if id_of_max != i:
-				# permutation
-				L[i], L[j] = L[j], L[i]
-				O[i], O[j] = O[j], O[i]
-				A[i], A[j] = A[j], A[i]
-				find = True
-
-			return find
-
 		A = self
 		n = len(A)
 
@@ -61,7 +40,7 @@ class Matrix(list):
 			L[i][0] = A[i][0]
 		
 		## permutation if the pivot is null
-		if L[0][0] == 0 and not permutation(0):
+		if L[0][0] == 0 and not permutation(L, 0, auxiliars_matrix=[A, O]):
 			return 0
 		
 		# Find first line of U
@@ -77,7 +56,7 @@ class Matrix(list):
 				L[j][i] = A[j][i] - sum(L[j][k]*U[k][i] for k in range(j))
 
 			## permutation if the pivot is null
-			if L[i][i] == 0 and not permutation(i):
+			if L[i][i] == 0 and not permutation(L, 0, auxiliars_matrix=[A, O]):
 				return 0
 
 			# line Ui: U[i][j], j > i

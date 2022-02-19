@@ -56,22 +56,15 @@ def triangulation(A, lower=False):
 		pivot_line = A[i]
 		pivot = pivot_line[i] # aii
 
-		## if pivot=0: swap lines ##
-		if not pivot:
-			find = False
-
-			for j in RANGE_J(i):
-				if A[j][i] != 0:
-					A[i], A[j] = A[j], A[i]
-					find = True
-					break
-
-			if find:
+		## if pivot=0: swap line 
+		## with line where max pivot != 0
+		if pivot == 0:
+			if permutation(A, start=i):
+				# update pivot
 				pivot_line = A[i]
-				pivot = pivot_line[i] # aii
+				pivot = pivot_line[i] 
 			else:
 				return 0
-		###
 
 		for j in RANGE_J(i):
 			secondary_line = A[j]
@@ -116,3 +109,32 @@ def diagonalization(A):
 	# printMatrix(A)
 
 	return 1
+
+def permutation(matrix, start: int, auxiliars_matrix=list()):
+	""" Permutation of matrix <matrix> from start index to
+		j index where matrix[j][i] not null
+
+	"""
+
+	A = matrix
+	n = len(A)
+	i = start
+	L = auxiliars_matrix
+
+	if A not in L:
+		L.append(A)
+
+	id_of_max = i
+
+	# search index of max pivot absolute value
+	for j in range(i + 1, n):
+		if A[j][i] and A[j][i] > abs(A[id_of_max][i]):
+			id_of_max = j
+
+	if id_of_max != i:
+		# permutation
+		for mt in L:
+			mt[i], mt[id_of_max] = mt[id_of_max], mt[i]
+		return 1
+	else:
+		return 0
