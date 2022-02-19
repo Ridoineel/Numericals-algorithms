@@ -1,5 +1,5 @@
 from utils.functions import *
-from matrix import Matrix
+from utils.matrix import Matrix
 
 def gauss(A, B):
 	""" Gauss algorithm to solve AX = B (algebraic systems)

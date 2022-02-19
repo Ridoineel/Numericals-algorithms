@@ -1,4 +1,9 @@
-from utils.functions import isMatrix, permutation
+import sys
+import os
+
+sys.path.append(os.path.dirname(__file__))
+
+from functions import isMatrix, permutation
 
 class Matrix(list):
 	def extend(self, B):
