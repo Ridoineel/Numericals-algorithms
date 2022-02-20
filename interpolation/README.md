@@ -1,1 +1,1 @@
-# Interpolcation algorithms
+# Interpolation algorithms
