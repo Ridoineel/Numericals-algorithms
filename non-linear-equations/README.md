@@ -9,22 +9,22 @@ pip install requirements.txt
 
 | Algorithm                                     | Comments                                              |
 |-----------------------------------------------|-------------------------------------------------------|
-| [Dichotomie](zero.py#L03)                        | [zero.py](zero.py#L03): lines 03-...               |
-| [Secante](zero.py#L24)                 | [zero.py](zero.py#L24): lines 24-...              |
-| [Newton](zero.py#L47)                           | [zero.py](zero.py#L47): lines 47-...              |
-| [Points Fixes](zero.py#L79)     | [zero.py](zero.py#L79): lines 79-...  |
+| [Dichotomie](zeros.py#L03)                        | [zeros.py](zeros.py#L03): lines 03-...               |
+| [Secante](zeros.py#L24)                 | [zeros.py](zeros.py#L24): lines 24-...              |
+| [Newton](zeros.py#L47)                           | [zeros.py](zeros.py#L47): lines 47-...              |
+| [Points Fixes](zeros.py#L79)     | [zeros.py](zeros.py#L79): lines 79-...  |
 
 <br>
 
-> All principals algorithms are located in **[zero.py](zero.py)**, <br>
+> All principals algorithms are located in **[zeros.py](zeros.py)**, <br>
 > and additional functions in **[utils/functions.py](utils/functions.py)**
 
 <br />
 
-> * ## [Dichotomie](zero.py#L03)
+> * ## [Dichotomie](zeros.py#L03)
 
-> * ## [Secante](zero.py#L24)
+> * ## [Secante](zeros.py#L24)
 
-> * ## [Newton](zero.py#L47)
+> * ## [Newton](zeros.py#L47)
 
-> * ## [Points Fixes](zero.py#L79)
+> * ## [Points Fixes](zeros.py#L79)
