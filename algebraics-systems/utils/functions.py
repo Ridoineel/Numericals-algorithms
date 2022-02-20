@@ -138,3 +138,31 @@ def permutation(matrix, start: int, auxiliars_matrix=list()):
 		return 1
 	else:
 		return 0
+
+def printMatrix(A):
+	if not isMatrix(A):
+		return None
+
+	for i in range(len(A)):
+		print("|", *[a.rjust(5) for a in map(str, A[i])])
+	
+	print()
+
+def printAandB(A, B):
+	""" A is square matrix and B is vector """
+	
+	length_a = len(A)
+	length_b = len(B)
+	adjust_size = 4
+
+	print("A".center(length_a*adjust_size), end="  ")
+	print("B".center(adjust_size*3))
+	print("-"*(length_a*adjust_size + adjust_size*3))
+
+	for i in range(max(length_a, length_b)):
+		if i < len(A):
+			# print(*A[i], "|", end=" ")
+			print(*[a.ljust(adjust_size) for a in map(str, A[i])], end="| ")
+		if i < len(B):
+			print(str(B[i]).rjust(adjust_size))
+		print()

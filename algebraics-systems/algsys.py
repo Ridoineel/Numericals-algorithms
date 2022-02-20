@@ -1,16 +1,21 @@
 from utils.functions import *
 from utils.matrix import Matrix
+from utils.decorators import outputController
 
+# value to return in order (for all functions):
+# 	° -1: A is not square matrix or
+# 		  B is not vector or
+# 		  line(A) != line(B)
+# 	° 0: A is not invertible matrix
+# 	° Vector X (list): if success
+
+@outputController
 def gauss(A, B):
 	""" Gauss algorithm to solve AX = B (algebraic systems)
 
-		value to retur in order:
-			° -1: line(A) != line(B)
-			° 0: A is not invertible matrix
-			° Vector X (list): if success
 	"""
 
-	if len(A) != len(B):
+	if not A.isSquareMatrix() or not isVector(B) or len(A) != len(B):
 		return -1
 
 	length_A = len(A)
@@ -37,16 +42,13 @@ def gauss(A, B):
 
 	return X
 
+@outputController
 def gaussJordan(A, B):
 	""" Gauss-Jordan algorithm to solve AX = B (algebraic systems)
-
-		value to return in order:
-			° -1: line(A) != line(B)
-			° 0: A is not invertible matrix
-			° Vector X (list): if success
+	
 	"""
 
-	if len(A) != len(B):
+	if not A.isSquareMatrix() or not isVector(B) or len(A) != len(B):
 		return -1
 
 	length_A = len(A)
@@ -67,16 +69,13 @@ def gaussJordan(A, B):
 
 	return X
 
-def lu(A, B):
+@outputController
+def lu(A, B, decomp_method="crout"):
 	""" LU algorithm to solve AX = B (algebraic systems)
 
-		value to return in order:
-			° -1: line(A) != line(B)
-			° 0: A is not invertible matrix
-			° Vector X (list): if success
 	"""
 
-	if len(A) != len(B):
+	if not A.isSquareMatrix() or not isVector(B) or len(A) != len(B):
 		return -1
 
 	length_A = len(A)
@@ -84,7 +83,7 @@ def lu(A, B):
 	Y = list()
 
 	# get crout decomposition of A
-	decomp = A.decompose(method="crout")
+	decomp = A.decompose(method=decomp_method)
 	if decomp == 0:
 		return 0
 
@@ -118,7 +117,15 @@ def lu(A, B):
 
 	return X
 
+@outputController
 def jaccobi(A, B, n_iter=20):
+	""" Jaccobi algorithm to solve AX = B (algebraic systems)
+
+	"""
+
+	if not A.isSquareMatrix() or not isVector(B) or len(A) != len(B):
+		return -1
+
 	n = len(A)
 
 	X = [0 for i in range(n)]
@@ -138,7 +145,15 @@ def jaccobi(A, B, n_iter=20):
 
 	return X
 
+@outputController
 def gaussSeidel(A, B, n_iter=20):
+	""" Gauss-Seidel algorithm to solve AX = B (algebraic systems)
+
+	"""
+
+	if not A.isSquareMatrix() or not isVector(B) or len(A) != len(B):
+		return -1
+
 	n = len(A)
 
 	X = [0 for i in range(n)]
@@ -161,15 +176,16 @@ def gaussSeidel(A, B, n_iter=20):
 
 def main():
 	# verify if not A.isSquareMatrix() or not isVector(B)
-	res = jaccobi(Matrix([
+	X = lu(Matrix([
 			[0, 2, 1],
 			[1, 2, 0],
-			[3, 0, 1],
+			[0, 1, 0],
 		]),
 			[5, -1, -2]
 		)
 
-	print(res)
+
+	print(X)
 
 if __name__ == "__main__":
 	main()
