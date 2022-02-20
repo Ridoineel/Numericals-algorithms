@@ -1,6 +1,6 @@
 # Non linear equations systeme algorithms
 
-#### Install requirements (for graphic option)
+#### Install requirements (for graphical option)
 
 ```bash
 pip install requirements.txt
