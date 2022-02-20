@@ -5,3 +5,13 @@ x**2 +7x - 1.44
 3
 10e-10
 yes
+
+
+*******************************
+// line 1: f expression
+// line 2: F (f -> x = F(x)) expression
+// line 3: a
+// line 4: b
+// line 5: x0
+// line 6: epsilon
+// line 7: print graphic ?
