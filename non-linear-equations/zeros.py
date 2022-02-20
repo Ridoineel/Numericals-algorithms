@@ -1,12 +1,4 @@
-#! /usr/bin/env python3
-
-from utils.graph import graph
-from utils.functions import getFunction, derivative, subIntervals
-from utils.Class import *
-from math import log10
-import sys
-
-#sys.stdin = open("tests/filesInput/main.txt")
+from utils.functions import derivative
 
 def dichotomie(f, a, b, prec=0.00001):
 	if f(a) * f(b) > 0:
@@ -85,6 +77,9 @@ def newton(f, x0, n=1000, interval=[float("-inf"), float("inf")]):
 		return result
 
 def pointsFixes(g, x0, n=1000, epsilon=10e-6):
+	# if abs(derivative(g, x0)) > 1:
+	# 	return "No convergence: |F'(x0)| > 1"
+
 	for i in range(n):
 		x1 = g(x0)
 		x2 = g(x1)
@@ -105,115 +100,3 @@ def pointsFixes(g, x0, n=1000, epsilon=10e-6):
 			x0 = xe
 
 	return None
-
-def getData():
-	try:
-		a = float(input("a: "))
-		b = float(input("b: "))
-		x0 = float(input("x0: "))
-		epsilon = float(input("ϵ (<= 10e-1): "))
-
-		if epsilon > 0.1:
-			raise ValueError("Error: epsilon must be <= 0.1")
-		if (a <= b and (x0 < a or x0 > b)) or ( a > b and (x0 < b or x0 > a)):
-			raise ValueError("Error: x0 must be in [a, b]")
-
-	except ValueError as msg:
-		print(Color.danger(f"Wrong data: {msg}"))
-		print()
-
-		return getData()
-
-	return a, b, x0, epsilon
-
-def main():
-	print(Style.bold(Color.success("Search solution of f(x) = 0 in interval [a, b].")))
-	print()
-
-	f = getFunction()
-	F = lambda x: f(x) + x
-	# F = getFunction("F")
-
-	a, b, x0, epsilon = getData();
-
-	print()
-
-	if a > b:
-		print(f"Swap a and b: [{a}, {b}] -> [{b}, {a}]")
-		print()
-		a, b = b, a
-
-	solutions = []
-	intervals = subIntervals(f, a, b)
-
-	if len(intervals) > 1:
-		print(Color.warning(f"Subdivision of interval [{a}, {b}] to {intervals}"))
-		print()
-
-	for interval in intervals.copy():
-		a1, b1 = interval
-
-		if f(a1) * f(b1) <= 0:
-			dichotomie_sol = dichotomie(f, a1, b1, epsilon) or f"No solution in [{a1}, {b1}]"
-			newton_sol = newton(f, x0, interval=[a1, b1]) or f"No solution in [{a1}, {b1}] with x0={x0}"
-			secante_sol = secante(f, a1, b1) or f"No solution in [{a1}, {b1}]"
-
-			try:
-				pf_sol = pointsFixes(F, x0) or f"No solution with x0={x0}"
-			except:
-				print(Color.danger("Error with points fixe: Domain error"))
-				exit()
-
-			solutions.append({
-				"newton": newton_sol,
-				"dichotomie": dichotomie_sol,
-				"secante": secante_sol,
-				"points fixes": pf_sol
-			})
-		else:
-			intervals.remove(interval)
-
-	print(intervals)
-
-	# Print Solutions
-
-	nb_sol = len(solutions)
-
-	print("Number of solution: ", nb_sol)
-	print()
-
-	for i, solution in enumerate(solutions):
-		print(Style.underline(f"Interval {i + 1}:"), f"({intervals[i][0]:.3f}, {intervals[i][1]:.3f})")
-
-		for name, sol in solution.items():
-			if sol.is_integer(): sol = int(sol)
-
-			print(f"{name.capitalize()}: {sol}") 
-
-		print()
-
-
-	# GRAPHIC ZONE
-
-	show_graphic = input("\nShow graphic ? (yes): ") or "yes"
-
-	if show_graphic.lower() in ["yes", "y", "oui", "o"]:
-		graph(f, a, b, points=[sol["newton"] for sol in solutions])
-
-		# if len(intervals) > 1:
-		# 	print("Close current graphical window to access next graphic\n")
-
-		# for i, interval in enumerate(intervals):
-		# 	a, b = interval
-
-		# 	print(f"Graphic {i + 1} for interval [{a:.3f}, {b:.3f}]")
-		# 	graph(f, a, b, points=[solutions[i]["newton"]])
-	
-if __name__ == "__main__":
-	try:
-		main()
-	except KeyboardInterrupt:
-		pass
-	except:
-		print(Color.danger("Error while programm runnning"))
-		print(Color.danger("Veirify if [a, b] in Domain interval"))

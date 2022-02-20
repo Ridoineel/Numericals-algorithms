@@ -90,11 +90,8 @@ def subIntervals(f, a, b, pas=0.001, eps=10e-4):
 					new_inter = (intervals[-1][1] + pas, i)
 
 					intervals.append(new_inter)
-
-		if i < ceil(i) and i + pas > ceil(i):
-			i = ceil(i)
-		else:
-			i += pas
+					
+		i += pas
 
 	if intervals and intervals[-1][1] + pas != b:
 		# add last with b
