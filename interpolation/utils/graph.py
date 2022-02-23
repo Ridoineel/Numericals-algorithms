@@ -1,14 +1,10 @@
-import os
 import numpy as np
 import matplotlib.pyplot as plt
-import sys
 
 def derivative(f, x, precision=10e-10):
 	return (f(x + precision) - f(x))/precision
 
 def graph(f, start=0, end=100, step=0.01, color="blue", deriv=False, points=[]):
-	
-
 	x = np.arange(start, end, step)
 	x_abs = np.arange(start, end, step)
 	points = np.array(points)

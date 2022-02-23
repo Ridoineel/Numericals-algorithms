@@ -1,9 +1,4 @@
-import os
-import sys
-
-sys.path.append("/home/ridoineel/Dev/Polynomials")
-
-from polynomials import Poly
+from polyno import Poly
 
 from utils.functions import prod
 from utils.graph import graph
@@ -20,6 +15,10 @@ def lagrange(points):
 		for pt in points:
 			if pt != points[i]:
 				x_k = pt[0] # k != i
+
+				if x_k == x_i:
+					print("Error: Invalid points data")
+					exit()
 
 				# x - x_k -> Poly({0:-x_k, 1:1})
 				num = Poly({0:-x_k, 1:1})
@@ -41,12 +40,14 @@ def newton(points):
 	pass
 
 def main():
-	points = [(0, -1), (-1, 0), (1, 0)]
+	points = [(0, -1), (-1, 0), (1, 4), (2, 40)]
 
 	f = lagrange(points)
 
+	print(f)
 
 	f_ndarray = lambda values: [f.eval(i) for i in values]
+	
 	graph(f_ndarray, -5, 5)
 
 if __name__ == '__main__':
