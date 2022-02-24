@@ -40,7 +40,7 @@ def newton(points):
 	pass
 
 def main():
-	points = [(0, -1), (-1, 0), (1, 4), (2, 40)]
+	points = [(-1, 1), (1, 0), (0, 3), (4, 2)]
 
 	f = lagrange(points)
 
