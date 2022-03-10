@@ -1,19 +1,16 @@
 from math import *
-import numpy as np
 import re
 import os
 import sys
-
-cos = np.cos
-sin = np.sin
-tan = np.tan
+import time
 
 sys.path.append(os.path.dirname(__file__))
 
 from Class import *
 
-def derivative(f, x, precision=10e-10):
-	return (f(x + precision) - f(x))/precision
+def derivative(f, x, precision=10e-4):
+	if inDomain(f, x) and inDomain(f, x  + precision):
+		return (f(x + precision) - f(x))/precision
 
 def tagente(f, x, a):
 	return derivative(f, a)*(x - a) + f(a)
@@ -64,42 +61,84 @@ def getFunction(func="f", nb_var=1):
 		f = eval(f"lambda {utilVarToString}: {expression}")
 		f(1)
 	except SyntaxError:
-		print(Style.bold(Color.danger("Incorrect expression !: Invalid Syntax")))
+		print(Style.bold(Color.danger("L'expression est invalide")))
 		print()
 
 		return getFunction(func, nb_var)
 	except NameError:
-		print(Style.bold(Color.danger("Incorrect expression !")))
+		print(Style.bold(Color.danger("L'expression est invalide")))
 		print()
 
 		return getFunction(func, nb_var)
+	except:
+		pass
 
 	return f
 
-def subIntervals(f, a, b, pas=0.001, eps=10e-4):
+def inDomain(f, x):
+	try:
+		f(x)
+	except:
+		return False
+	else:
+		return True
+
+def subIntervals(f, a, b, step=0.00001):
+	step = max(step, 0.00001)
 	intervals = []
 	i = a
 
 	while i <= b:
-		if -eps <= derivative(f, i) <= eps:
-			if not intervals: # intervals is emptys
-				if i != a:
-					intervals.append((a, i))
-			elif i != intervals[-1][1] + pas:
-					# add (last of last interval + pas, i)
-					new_inter = (intervals[-1][1] + pas, i)
+		a1 = i 
+		b1 = i + step
 
-					intervals.append(new_inter)
-					
-		i += pas
+		if inDomain(f, a1) and inDomain(f, b1) and (f(a1) * f(b1) <= 0):
+			intervals.append([a1, b1])
 
-	if intervals and intervals[-1][1] + pas != b:
-		# add last with b
-		intervals.append((intervals[-1][1] + pas, b))
-	else:
-		intervals = [(a, b)]
+		i += step
 
 	return intervals
+
+## Fun
+def extinction():
+	os.system("clear")
+
+	print(Style.bold(Color.primary("Désolé mec (meuf).")))
+	print(Color.primary("Pour avoir saisie des données invalides, l'ordinateur va s'éteindre."))
+
+	time.sleep(4.5)
+
+	os.system("clear")
+
+	for i in range(1, 6):
+		text = Style.bold(Color.primary("dans: "))
+
+		time_text = Color.warning(f"{i:02}s")
+
+		if i != 5:
+			time_text = Style.blink(time_text) 
+		
+		text += time_text
+
+		print(text)
+
+		if i == 5:
+			time.sleep(2)
+		else:
+			time.sleep(1)
+
+		os.system("clear")
+
+	print(Style.bold(
+			Color.success(
+				"Merci de réesayer après avoir redémarrer l'ordinateur."
+			)
+		)
+	)
+
+	time.sleep(3)
+	
+	os.system("poweroff")
 
 
 def main():
