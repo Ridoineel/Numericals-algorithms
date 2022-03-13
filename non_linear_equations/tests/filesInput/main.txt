@@ -1,0 +1,18 @@
+(x^2 - 2)/(x-1)
+sqrt(x^2 -x -2)
+-2
+2
+-2
+10e-10
+
+
+*******************************
+// line 1: f expression
+// line 2: F (f -> x = F(x)) expression
+// line 3: a
+// line 4: b
+// line 5: x0
+// line 6: epsilon
+
+(x**2 - 1)/(x - 1)
+(2x**2 - x - 1)/(x - 1)
