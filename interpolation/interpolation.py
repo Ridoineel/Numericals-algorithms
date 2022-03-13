@@ -1,11 +1,6 @@
 #! /usr/bin/env python3
 
 from numpy.linalg import solve
-
-
-import sys
-
-sys.path.append("/home/ridoineel/Dev/Polynomials/src")
 from polyno import Poly
 
 from utils.functions import *
