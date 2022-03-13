@@ -8,7 +8,7 @@
 | [LU](algsys.py#L73)                           | [algsys.py](algsys.py#L73): lines 73-...              |
 | [LU-Crout algorithm](utils/matrix.py#L27)     | [utils/matrix.py](utils/matrix.py#L27): lines 27-...  |
 | [LU-Choleski algorithm](utils/matrix.py#L76)  | [utils/matrix.py](utils/matrix.py#L76): lines 76-...  |
-| [Jaccobi](algsys.py#L121)                     | [algsys.py](algsys.py#L121): lines 121-...            |
+| [Jacobi](algsys.py#L121)                     | [algsys.py](algsys.py#L121): lines 121-...            |
 | [Gauss-Seidel](algsys.py#L149)                | [algsys.py](algsys.py#L149): lines 149-...            |
 
 <br>
@@ -28,6 +28,6 @@
 
 > * ## [LU-Choleski algorithm](utils/matrix.py#L76)
 
-> * ## [Jaccobi](algsys.py#L121)
+> * ## [Jacobi](algsys.py#L121)
 
 > * ## [Gauss-Seidel](algsys.py#L149)

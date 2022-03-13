@@ -1,21 +1,30 @@
+from itertools import combinations
+
 def isMatrix(A):
 	if not A:
 		return False
 
+	if not isinstance(A[0], list):
+		return False
+
 	nb_cols = len(A[0])
 
-	for line in A:
-		if type(line) != list or len(line) != nb_cols:
+	for L in A:
+		if not isinstance(L, list) or len(L) != nb_cols:
 			return False
+
+		for i in L:
+			if not isinstance(i, int) and not isinstance(i, float):
+				return False
 
 	return True
 
-def isVector(A):
-	if not isinstance(A, list):
+def isVector(B):
+	if not isinstance(B, list):
 		return False
 
-	for i in A:
-		if isinstance(i, list):
+	for i in B:
+		if not isinstance(i, int) and not isinstance(i, float):
 			return False
 
 	return True
@@ -71,6 +80,7 @@ def triangulation(A, lower=False):
 			sl_first = secondary_line[i]
 
 			A[j] = [sl_i -(sl_first/pivot)*pl_i for (sl_i, pl_i) in zip(secondary_line, pivot_line)]
+			
 
 			# if any of line is null: [0, 0, ..., 0]
 			# not with extended values (:n)
@@ -110,7 +120,7 @@ def diagonalization(A):
 
 	return 1
 
-def permutation(matrix, start: int, auxiliars_matrix=list()):
+def permutation(matrix, start: int, auxiliars_matrix=[], withmax=True):
 	""" Permutation of matrix <matrix> from start index to
 		j index where matrix[j][i] not null
 
@@ -131,6 +141,11 @@ def permutation(matrix, start: int, auxiliars_matrix=list()):
 		if A[j][i] and A[j][i] > abs(A[id_of_max][i]):
 			id_of_max = j
 
+			if not withmax:
+				break
+
+	# printMatrix(A)
+	# printMatrix([auxiliars_matrix])
 	if id_of_max != i:
 		# permutation
 		for mt in L:
@@ -138,6 +153,47 @@ def permutation(matrix, start: int, auxiliars_matrix=list()):
 		return 1
 	else:
 		return 0
+
+def setBestPermutation(A, auxiliars_matrix=[]):
+	""" best permutation of A 
+		where all pivot != 0
+
+	"""
+
+	def isRight(A):
+		result = True
+
+		for i in range(len(A)):
+			if A[i][i] == 0:
+				result = False
+				break
+
+		return result
+
+	n = len(A)
+	L = [A] + auxiliars_matrix
+	"""
+	for i, j in combinations(range(n), 2):
+		# if pivots not null
+		if isRight(A):
+			break
+
+
+		for M in L:
+			M[i], M[j] = M[j], M[i]
+
+		# print(f"{i} <--> {j}")
+		# printMatrix(A)
+
+	"""
+	for i in range(n):
+		if A[i][i] == 0:
+			for j in range(i + 1, n):
+				if A[i][j] != 0:
+					for M in L:
+						M[i], M[j] = M[j], M[i]
+
+					break
 
 def printMatrix(A):
 	if not isMatrix(A):

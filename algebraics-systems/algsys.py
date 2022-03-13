@@ -2,12 +2,22 @@ from utils.functions import *
 from utils.matrix import Matrix
 from utils.decorators import outputController
 
+from utils.zeros import pointsFixes
+import numpy as np
+
 # value to return in order (for all functions):
-# 	° -1: A is not square matrix or
-# 		  B is not vector or
-# 		  line(A) != line(B)
 # 	° 0: A is not invertible matrix
-# 	° Vector X (list): if success
+# 	° 
+#	-1: A is not square mat
+#	-2: B is not vector
+#	-3: len(A) != len(B)
+#	0: A is not invertible matrix
+#	1: A is not symetric
+#	2: A is not defined positve
+#	3: A is not dominant diagonal matrix
+#	4: A is not tridiagonal matrix
+# 	5: Lii = 0 while thomas running
+#	Vector X (list): if success
 
 @outputController
 def gauss(A, B):
@@ -15,8 +25,9 @@ def gauss(A, B):
 
 	"""
 
-	if not A.isSquareMatrix() or not isVector(B) or len(A) != len(B):
-		return -1
+	if not A.isSquareMatrix(): return -1
+	if not isVector(B): return -2
+	if len(A) != len(B): return -3
 
 	length_A = len(A)
 	X = [None for i in range(length_A)]
@@ -26,7 +37,6 @@ def gauss(A, B):
 	# Do triangulation
 	if triangulation(AB) == 0:
 		return 0
-	
 
 	# Get X elements by doing the reascent
 	for i in range(length_A - 1, -1, -1):
@@ -34,11 +44,8 @@ def gauss(A, B):
 		Bi = AB[i][-1]
 		Ai = AB[i][i]
 
-		X[i] = round((Bi - Si)/Ai, 8)
-
-		# # convert X float-integer to integer type : ex -1.0 -> -1
-		if type(X[i]) == float and X[i].is_integer():
-			X[i] = int(X[i])
+		X[i] = (Bi - Si)/Ai
+		X[i] = round(X[i], 8)
 
 	return X
 
@@ -47,9 +54,10 @@ def gaussJordan(A, B):
 	""" Gauss-Jordan algorithm to solve AX = B (algebraic systems)
 	
 	"""
-
-	if not A.isSquareMatrix() or not isVector(B) or len(A) != len(B):
-		return -1
+	
+	if not A.isSquareMatrix(): return -1
+	if not isVector(B): return -2
+	if len(A) != len(B): return -3
 
 	length_A = len(A)
 	X = []
@@ -61,11 +69,8 @@ def gaussJordan(A, B):
 
 	# Get X elements: last of AB lines
 	for i in range(length_A):
-		X.append(round(AB[i][-1], 8))
-
-		# # convert Xi float-integer to integer type : ex -1.0 -> -1
-		if type(X[i]) == float and X[i].is_integer():
-			X[i] = int(X[i])
+		X.append(AB[i][-1])
+		X[i] = round(X[i], 8)
 
 	return X
 
@@ -75,8 +80,10 @@ def lu(A, B, decomp_method="crout"):
 
 	"""
 
-	if not A.isSquareMatrix() or not isVector(B) or len(A) != len(B):
-		return -1
+	if not A.isSquareMatrix(): return -1
+	if not isVector(B): return -2
+	if len(A) != len(B): return -3
+	if not A.isInvertible(): return 0
 
 	length_A = len(A)
 	X = [None for i in range(length_A)]
@@ -84,8 +91,9 @@ def lu(A, B, decomp_method="crout"):
 
 	# get crout decomposition of A
 	decomp = A.decompose(method=decomp_method)
-	if decomp == 0:
-		return 0
+
+	if not isinstance(decomp, tuple):
+		return decomp
 
 	L, U, O = decomp
 
@@ -100,31 +108,68 @@ def lu(A, B, decomp_method="crout"):
 
 		Y.append(round((Bi - Si)/Lii, 8))
 
-		# convert Y float-integer to integer type : ex -1.0 -> -1
-		if type(Y[i]) == float and Y[i].is_integer():
-			Y[i] = int(Y[i])
-
 	# Get X elements by doing the reascent
 	for i in range(length_A - 1, -1, -1):
 		Si = sum([U[i][j]*X[j] for j in range(i + 1, length_A)])
 		Yi = Y[i]
+		Uii = U[i][i]
 
-		X[i] = round(Yi - Si, 8)
-
-		# # convert X float-integer to integer type : ex -1.0 -> -1
-		if type(X[i]) == float and X[i].is_integer():
-			X[i] = int(X[i])
+		X[i] = (Yi - Si)/Uii
+		X[i] = round(X[i], 8)
 
 	return X
 
 @outputController
-def jaccobi(A, B, n_iter=20):
-	""" Jaccobi algorithm to solve AX = B (algebraic systems)
+def thomas(A, B):
+	if not A.isSquareMatrix(): return -1
+	if not isVector(B): return -2
+	if len(A) != len(B): return -3
+	if not A.istridiagonal(): return 4
+	if not A.isInvertible(): return 0
+
+	n = len(A)
+	X = [0 for i in range(n)]
+	# first elimination
+
+	for i in range(1, n):
+		if A[i-1][i-1] == 0:
+			return 5
+			# if A[i][i-1] != 0:
+			# 	A[i-1], A[i] = A[i], A[i-1]
+			# 	B[i-1], B[i] = B[i], B[i-1]
+			# else:
+			# 	return 0
+
+		A[i][i] = A[i][i] - (A[i][i-1]/A[i-1][i-1])*A[i-1][i]
+		B[i] = B[i] - (A[i][i-1]/A[i-1][i-1])*B[i-1]
+
+		A[i][i - 1] = 0
+
+	# X
+	X[n-1] = B[n-1]/A[n-1][n-1]
+	X[n-1] = round(X[n-1], 8)
+
+	for i in range(n - 2, -1, -1):
+		X[i] = (B[i] - A[i][i + 1]*X[i + 1])/A[i][i]
+		X[i] = round(X[i], 8)
+
+	return X
+
+@outputController
+def jacobi(A, B, n_iter=100):
+	""" Jacobi algorithm to solve AX = B (algebraic systems)
 
 	"""
 
-	if not A.isSquareMatrix() or not isVector(B) or len(A) != len(B):
-		return -1
+	if not A.isSquareMatrix(): return -1
+	if not isVector(B): return -2
+	if len(A) != len(B): return -3
+	if not A.isInvertible(): return 0
+
+	# setBestPermutation(A, auxiliars_matrix=[B])
+
+	if not A.isDominantDiagonal(): 
+		return 3
 
 	n = len(A)
 
@@ -133,12 +178,10 @@ def jaccobi(A, B, n_iter=20):
 
 	for k in range(n_iter):
 		for i in range(n):
-			## permutation if pivot A[i][i]=0 ##
-			if A[i][i] == 0 and not permutation(A, start=i, auxiliars_matrix=[B]):
-				return 0
-
 			S = sum(A[i][j]*Xk[j] for j in range(n) if j != i)
-			X[i] = round((B[i] - S)/A[i][i], 8)
+			
+			X[i] = (B[i] - S)/A[i][i]
+			X[i] = round(X[i], 8)
 
 		# print(k, X, Xk)
 		Xk = X.copy()
@@ -151,8 +194,15 @@ def gaussSeidel(A, B, n_iter=20):
 
 	"""
 
-	if not A.isSquareMatrix() or not isVector(B) or len(A) != len(B):
-		return -1
+	if not A.isSquareMatrix(): return -1
+	if not isVector(B): return -2
+	if len(A) != len(B): return -3
+	if not A.isInvertible(): return 0
+
+	# setBestPermutation(A, auxiliars_matrix=[B])
+
+	if not A.isDominantDiagonal():
+		return 3
 
 	n = len(A)
 
@@ -161,18 +211,59 @@ def gaussSeidel(A, B, n_iter=20):
 
 	for k in range(n_iter):
 		for i in range(n):
-			## permutation if pivot A[i][i]=0 ##
-			if A[i][i] == 0 and not permutation(A, start=i, auxiliars_matrix=[B]):
-				return 0
-	
 			S1 = sum(A[i][j]*X[j] for j in range(i))
 			S2 = sum(A[i][j]*Xk[j] for j in range(i + 1, n))
 			
-			X[i] = round((B[i] - S1 - S2)/A[i][i], 8)
+			X[i] = (B[i] - S1 - S2)/A[i][i]
+			X[i] = round(X[i], 8)
 
 		Xk = X.copy()
 
 	return X
+
+@outputController
+def jacobi2(A, B, n_iter=20):
+	""" Jacobi algorithm to solve AX = B (algebraic systems)
+
+	"""
+
+	if not A.isSquareMatrix(): return -1
+	if not isVector(B): return -2
+	if len(A) != len(B): return -3
+	if not A.isInvertible(): return 0
+
+	if not A.isDominantDiagonal(): 
+		return 3
+
+	n = len(A)
+
+	D, L, U = A.decompose("DLU")
+
+	# inverse of D
+	for i in range(n):
+		D[i][i] = 1/D[i][i]
+
+	T = -D*(L + U)
+	C = D*B
+	X = [0 for i in range(n)]
+	Xk = X.copy()
+
+	g = lambda X: T.dot(X) + C
+	
+	X = np.array([[i] for i in X])
+	T = np.array(T)
+	C = np.array([[i] for i in C])
+
+
+	for i in range(n_iter):
+		X = g(Xk)
+
+		Xk = X
+
+	X = [round(i[0], 8) for i in X]
+
+	return X
+
 
 def main():
 	# verify if not A.isSquareMatrix() or not isVector(B)
