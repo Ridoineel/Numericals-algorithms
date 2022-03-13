@@ -2,7 +2,6 @@ from utils.functions import *
 from utils.matrix import Matrix
 from utils.decorators import outputController
 
-from utils.zeros import pointsFixes
 import numpy as np
 
 # value to return in order (for all functions):
