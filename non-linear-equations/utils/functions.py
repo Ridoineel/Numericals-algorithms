@@ -55,7 +55,7 @@ def getFunction(func="f", nb_var=1):
 
 	# replace implicit multiplication to explicit multiplication: 
 	# ex: 12x + 2y -> 12*x + 2*y
-	expression = re.sub(rf"([0-9])({''.join(utilVariables)})", r"\1*\2", expression)
+	expression = re.sub(rf"([0-9])([{''.join(utilVariables)}])", r"\1*\2", expression)
 
 	try:
 		f = eval(f"lambda {utilVarToString}: {expression}")

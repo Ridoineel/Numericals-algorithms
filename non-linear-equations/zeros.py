@@ -1,5 +1,6 @@
 from utils.functions import derivative, inDomain
 
+
 def dichotomie(f, a, b, prec=0.00001):
 	if f(a) * f(b) > 0:
 		return None
