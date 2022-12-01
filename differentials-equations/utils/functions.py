@@ -1,51 +1,14 @@
+import matplotlib.pyplot as plt
 
-def heun(f, y0, T=100, h=0.2):
-	""" 2nd order differential equation,
-		with heun method.
+def graphic(X, Y, name="", show=True, **kwargs):
+	ax = plt.axes()
 
-		y_{n+1} = y_{n} + (h/2)(f(t_{n}, y_{n}) + f(t_{n + 1}, y_{n} + h*f(t_{n}, y_{n}))
+	ax.set_xlabel("--> t")
+	ax.set_ylabel("--> y")
+	# ax.set_title("")
 
-	"""
-	
-	y = y0
-	X = [0]
-	Y = [y0]
+	plt.scatter(X, Y, label=name, **kwargs)
+	plt.legend()
 
-	t = 0
-	while t < T:
-		K1 = f(t, y)
-		K2 = f(t + h, y + h*K1)
-
-		y = y + h*(K1 + K2)/2
-
-		X.append(t)
-		Y.append(y)
-
-		t += h
-
-	return X, Y
-
-def modifEuler(f, y0, T=100, h=0.2):
-	""" 2nd order differential equation 
-		with modified euler method
-
-		y_{n+1} = y_{n} + h*f(t_{n + 1/2}, y_{n} + (1/2)f(t_{n}, y_{n}))
-
-	"""
-	
-	y = y0
-	X = [0]
-	Y = [y0]
-
-	t = 0
-	while t < T:
-		K = f(t + h/2, y + f(t, y)/2)
-
-		y = y + K
-
-		X.append(t)
-		Y.append(y)
-
-		t += h
-
-	return X, Y
+	if show:
+		plt.show()

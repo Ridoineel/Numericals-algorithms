@@ -1,4 +1,4 @@
-# Non linear equations systeme algorithms
+# Non linear equations system algorithms
 
 #### Install requirements (for graphical option)
 
@@ -9,10 +9,10 @@ pip install requirements.txt
 
 | Algorithm                                     | Comments                                              |
 |-----------------------------------------------|-------------------------------------------------------|
-| [Dichotomie](zeros.py#L03)                        | [zeros.py](zeros.py#L03): lines 03-...               |
-| [Secante](zeros.py#L24)                 | [zeros.py](zeros.py#L24): lines 24-...              |
-| [Newton](zeros.py#L47)                           | [zeros.py](zeros.py#L47): lines 47-...              |
-| [Points Fixes](zeros.py#L79)     | [zeros.py](zeros.py#L79): lines 79-...  |
+| [Dichotomie](zeros.py#L03)                        | [zeros.py](zeros.py#L04): lines 04-...               |
+| [Secante](zeros.py#L24)                 | [zeros.py](zeros.py#L27): lines 27-...              |
+| [Newton](zeros.py#L47)                           | [zeros.py](zeros.py#L56): lines 56-...              |
+| [Points Fixes](zeros.py#L79)     | [zeros.py](zeros.py#L90): lines 90-...  |
 
 <br>
 
@@ -21,10 +21,13 @@ pip install requirements.txt
 
 <br />
 
-> * ## [Dichotomie](zeros.py#L03)
+    By default, input is the file tests/filesInput/main.txt
+    set console input with main.py / main(useFile=False)
 
-> * ## [Secante](zeros.py#L24)
+> * ## [Dichotomie](zeros.py#L04)
 
-> * ## [Newton](zeros.py#L47)
+> * ## [Secante](zeros.py#L27)
 
-> * ## [Points Fixes](zeros.py#L79)
+> * ## [Newton](zeros.py#L56)
+
+> * ## [Points Fixes](zeros.py#L90)

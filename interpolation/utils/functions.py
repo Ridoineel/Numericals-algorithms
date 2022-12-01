@@ -25,6 +25,18 @@ def hashList(L):
 	return ",".join(L_string)
 
 def genGeoGebraData(points, newton_f, lagrange_f, moindrec_f):
+	""" This function write 
+		text data of functions (newton, lagrange, moindrec)
+		in the file data/data_geogeb.txt
+		
+		example of the content of data/data_geogeb.txt:
+
+			Newton(x) = x^3 - 1
+			Lagrange(x) = x^3 - 1
+			MoindreCarre(x) = 7x - 1
+			Points = {(-3.0, -28.0), (-2.0, -9.0), (-1.0, -2.0), (0.0, -1.0), (1.0, 0.0), (2.0, 7.0), (3.0, 26.0)}
+	"""
+	
 	points_toString = ", ".join([t.__str__() for t in points])
 	points_toString = "Points = {" + points_toString + "}"
 

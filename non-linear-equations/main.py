@@ -38,7 +38,7 @@ def main(useFile=False):
 		"points fixes": set()
 	}
 	
-	### Dichotomie and secante ###
+	### Dichotomie et secante ###
 
 	for interval in intervals.copy():
 		a1, b1 = interval
@@ -65,7 +65,7 @@ def main(useFile=False):
 
 	##############################
 
-	## Newton and Points Fixes ##
+	## Newton et Points Fixes ##
 
 	N = 100
 	newton_sol = newton(f, x0, N, eps) 
@@ -97,7 +97,7 @@ def main(useFile=False):
 
 	for name, sols in solutions.items():
 		if not sols: 
-			sols = "Aucune solution trouvé"
+			sols = "Aucune solution trouvée"
 		else:
 			sols = " et ".join(map(str, sorted(sols)))
 
@@ -139,4 +139,4 @@ def getData():
 	return a, b, x0, eps
 
 if __name__ == "__main__":
-	main(1)
+	main(useFile=True)

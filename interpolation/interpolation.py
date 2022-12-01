@@ -5,6 +5,12 @@ from polyno import Poly
 
 from utils.functions import *
 
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
+#
+# points: [(x1, y1), (x2, y2), ..., (xn, yn)]  #
+#
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
+
 def lagrange(points):
 	n = len(points)
 	L = [None for i in range(n)]
@@ -19,7 +25,7 @@ def lagrange(points):
 				x_k = pt[0] # k != i
 
 				if x_k == x_i:
-					print("Erreur: Surjection, deux points différents ont les mm x")
+					print("Erreur: Surjection, deux points différents ont les mêmes x")
 					exit()
 
 				# x - x_k -> Poly({0:-x_k, 1:1})
@@ -40,7 +46,7 @@ def lagrange(points):
 
 cache = dict()
 def cn(points):
-	""" newtone polynomial coefficient 
+	""" newtone polynomial coefficients
 
 	"""
 

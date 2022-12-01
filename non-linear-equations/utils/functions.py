@@ -26,7 +26,7 @@ def functionsEval(func_list, x):
 	return value
 
 def derivativeCompose(func_list, x):
-	""" derivativeation of f1°f2°...°fn (x) """
+	""" derivative of f1°f2°...°fn (x) """
 
 	if len(func_list) == 2:
 		# f1°f2
@@ -41,10 +41,28 @@ def derivativeCompose(func_list, x):
 		return derivativeCompose(others_func, x) * derivative(f1, functionsEval(others_func, x))
 
 def getFunction(func="f", nb_var=1):
+	""" This function take user input of function expression
+		such as x^2 + 3x - 2
+		and return the python function
+		
+		exemple:
+		>> f = getFunction()
+		f(x): x^2 + 3x - 2
+		>> # test
+		>> f(1)
+		2
+		>> f(-10)
+		68
+	"""
+
 	variables = ["x", "y", "z", "k", "m", "t"]
 	utilVariables = variables[:nb_var]
 	utilVarToString = ", ".join(utilVariables)
 
+	# get expression
+
+	# input message can be 
+	# f(x): or f(x, y): , ...
 	expression = input(Style.bold(f"{func}({utilVarToString}): "))
 
 	# replace ^ by **
@@ -53,7 +71,8 @@ def getFunction(func="f", nb_var=1):
 	# replace ln by log10
 	expression = expression.replace("ln", "log10")
 
-	# replace implicit multiplication to explicit multiplication: 
+	# replace implicit multiplication 
+	# to explicit multiplication: 
 	# ex: 12x + 2y -> 12*x + 2*y
 	expression = re.sub(rf"([0-9])([{''.join(utilVariables)}])", r"\1*\2", expression)
 
@@ -101,6 +120,10 @@ def subIntervals(f, a, b, step=0.00001):
 
 ## Fun
 def extinction():
+	""" Warning !!!
+		This function poweroff your computer
+	"""
+
 	os.system("clear")
 
 	print(Style.bold(Color.primary("Désolé mec (meuf).")))

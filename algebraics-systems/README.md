@@ -16,6 +16,21 @@
 > All principals algorithms are located in **[algsys.py](algsys.py)**, <br>
 > and additional functions in **[utils/functions.py](utils/functions.py)**
 
+	Inputs in the file data/input.txt
+		first line: n, the size of the square matrix
+		each n lines have n numbers
+
+		example:
+		7
+		0 1 2 3 4 1 0
+		1 0 1 2 3 1 1
+		2 1 0 1 2 1 2
+		3 2 1 0 1 1 3
+		4 3 2 1 0 1 4
+		1 1 1 1 1 0 0
+		0 1 2 3 4 0 0
+		0 1 1 2 2 0 0
+
 <br />
 
 > * ## [Gauss](algsys.py#L04)
